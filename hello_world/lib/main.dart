@@ -43,6 +43,9 @@ class _MyHomePageState extends State<MyHomePage> {
       body: Column(children: [
         const Text("Hello World!"),
         const Text("ハローワールド！"),
+        TextButton(onPressed: () => {print("ボタンが押されたよ")},
+        child: const Text("ボタン"),
+        )
       ])
     );
   }
