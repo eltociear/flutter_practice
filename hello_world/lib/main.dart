@@ -31,16 +31,10 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
-  String _type = "偶数";
 
   void _incrementCounter() {
     setState(() {
       _counter++;
-      if (_counter % 2 == 0) {
-        _type = "偶数";
-      } else {
-        _type = "奇数";
-      }
     });
   }
 
@@ -61,7 +55,8 @@ class _MyHomePageState extends State<MyHomePage> {
             Text(
               '$_counter',
               style: Theme.of(context).textTheme.headlineMedium),
-              Text('$_type', style: TextStyle(fontSize: 20, color: Colors.red))
+              if (_counter % 2 == 0)
+                const Text("偶数です", style: TextStyle(fontSize: 20, color: Colors.red)),
           ],
         ),
       ),
