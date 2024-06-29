@@ -30,11 +30,12 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
+  bool _flag = false;
 
-  void _incrementCounter() {
+  // ボタン押下時にフラグ切り替え
+  _click() async {
     setState(() {
-      _counter++;
+      _flag = !_flag;
     });
   }
 
@@ -49,19 +50,38 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
+            AnimatedOpacity(
+              opacity: _flag ? 0.1 : 1.0,
+              duration: const Duration(seconds: 3),
+              child: Text(
+                '消える文字',
+                // style: Theme.of(context).textTheme.headline4,
+              )
             ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
+            AnimatedSize(
+              duration: const Duration(seconds: 3),
+              child: SizedBox(
+                width: _flag ? 50 : 200,
+                height: _flag ? 50 : 200,
+                child: Container(
+                  color: Colors.purple,
+                )
+              ),
             ),
+            AnimatedAlign(
+              duration: const Duration(seconds: 3),
+              alignment: _flag ? Alignment.topLeft : Alignment.bottomRight,
+              child: SizedBox(
+                width: 50,
+                height: 50,
+                child: Container(color: Colors.green,),
+              ),
+            )
           ],
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
+        onPressed: _click,
         child: const Icon(Icons.add),
       ),
     );
