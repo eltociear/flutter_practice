@@ -50,33 +50,21 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            AnimatedOpacity(
-              opacity: _flag ? 0.1 : 1.0,
-              duration: const Duration(seconds: 3),
-              child: Text(
-                '消える文字',
-                // style: Theme.of(context).textTheme.headline4,
-              )
+            AnimatedContainer(
+              duration: const Duration(seconds: 1),
+              width: _flag ? 100 : 50,
+              height: _flag ? 50 : 100,
+              padding: _flag ? const EdgeInsets.all(0) : const EdgeInsets.all(30),
+              margin: _flag ? const EdgeInsets.all(0) : const EdgeInsets.all(30),
+              transform: _flag ? Matrix4.skewX(0.0) : Matrix4.skewX(0.3),
+              color: _flag ? Colors.blue : Colors.grey
             ),
-            AnimatedSize(
-              duration: const Duration(seconds: 3),
-              child: SizedBox(
-                width: _flag ? 50 : 200,
-                height: _flag ? 50 : 200,
-                child: Container(
-                  color: Colors.purple,
-                )
-              ),
+            AnimatedSwitcher(
+              duration: const Duration(seconds: 1),
+              child: _flag
+              ? const Text('なにもない')
+              : const Icon(Icons.favorite, color: Colors.pink)
             ),
-            AnimatedAlign(
-              duration: const Duration(seconds: 3),
-              alignment: _flag ? Alignment.topLeft : Alignment.bottomRight,
-              child: SizedBox(
-                width: 50,
-                height: 50,
-                child: Container(color: Colors.green,),
-              ),
-            )
           ],
         ),
       ),
