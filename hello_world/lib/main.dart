@@ -19,11 +19,6 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ),
       home: const MyHomePage(title: 'Flutter Demo Home Page'),
-      routes: {
-        "/test1": (BuildContext context) => TestPage1(),
-        "/test2": (BuildContext context) => TestPage2(),
-        "/test3": (BuildContext context) => TestPage3(),
-      },
     );
   }
 }
@@ -36,9 +31,39 @@ class MyHomePage extends StatefulWidget {
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
+class _MyHomePageState extends State<MyHomePage> {
+  late PageController _pageController;
+  int _selectedIndex = 0;
+  // ページの配列
+  final _pages = [
+    TestPage1(),
+    TestPage2(),
+    TestPage3(),
+  ];
+  @override
+  void initState() {
+    super.initState();
+    _pageController = PageController(initialPage: _selectedIndex);
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _pageController.dispose();
+  }
+
+  void _onPageChanged(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(body: TestPage1());
+    return Scaffold(
+        body: PageView(
+            controller: _pageController,
+            onPageChanged: _onPageChanged,
+            children: _pages));
   }
 }

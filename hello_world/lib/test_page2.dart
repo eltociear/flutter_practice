@@ -1,17 +1,15 @@
 import 'package:flutter/material.dart';
 
-class TestPage1 extends StatelessWidget {
+class TestPage2 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: const Text("Test1"),
+          title: const Text("Test2"),
         ),
         body: Center(
-            child: TextButton(
-                onPressed: () => {
-                      Navigator.of(context).pushNamed("/test3") // 下記の書き方でも可
-                    },
-                child: const Text("進む", style: TextStyle(fontSize: 80)))));
+            child: Container(
+                color: Colors.greenAccent,
+                child: const Text("Test2", style: TextStyle(fontSize: 80)))));
   }
 }
