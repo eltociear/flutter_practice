@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'business_logic.dart';
 import 'dart:async';
 
 // 1. エントリーポイントのmain関数
@@ -35,75 +36,51 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-  // Stream
-  final _counterStream = StreamController<int>();
+  /* floatingActionButton及び_incrementCounterは不要のため削除 */
+  var intStream = StreamController<int>();
+  var stringStream = StreamController<String>.broadcast();
 
-  // 初期化時にConsumerのコンストラクタにStreamを渡す
-  @override
+  // 初期化時に各クラスにStreamを渡す @override
   void initState() {
     super.initState();
-    Consumer(_counterStream);
+    Generator(intStream);
+    Coordinator(intStream, stringStream);
+    Consumer(stringStream);
   }
 
-  // 終了時にStreamを解放する
-  @override
+  // 終了時にStreamを解放する @override
   void dispose() {
     super.dispose();
-    _counterStream.close();
-  }
-
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-      print("hello world");
-    });
-    // カウントアップした後に、 Streamにカウンタ値を流す
-    _counterStream.sink.add(_counter);
+    intStream.close();
+    stringStream.close();
   }
 
   @override
   Widget build(BuildContext context) {
-    // 4. MyHomePageの画面を構築する部分
     return Scaffold(
-      // 画面上部のタイトル部分
       appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: Text(widget.title),
       ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            // 画面の中央に表示されるテキスト
             const Text(
               'You have pushed the button this many times:',
             ),
-            // テキストの下に表示されるカウンタ値
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
+            StreamBuilder<String>(
+              stream: stringStream.stream,
+              initialData: "",
+              builder: (context, snapshot) {
+                return Text(
+                  '${snapshot.data}',
+                  style: Theme.of(context).textTheme.displayMedium,
+                );
+              },
+            )
           ],
         ),
       ),
-      // 右下の 「+」 ボタンに対応するフローティングアクションボタン
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
     );
-  }
-}
-
-// Consumerクラス
-class Consumer {
-  // コンストラクタで int 型の Stream を受け取る
-  Consumer(StreamController<int> consumeStream) {
-    // Streamをlistenしてデータが来たらターミナルに表示する
-    consumeStream.stream.listen((data) async {
-      print("consumer が $data を使ったよ !");
-    });
   }
 }
