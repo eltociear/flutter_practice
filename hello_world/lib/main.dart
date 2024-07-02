@@ -52,7 +52,11 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       // 使用する箇所の上位にProviderを入れる
       body: Provider<int>.value(
-          value: _counter, child: const Center(child: MyWidget())),
+          value: _counter,
+          child: Center(
+              child: Consumer<int>(
+                  builder: (context, value, _) => Text("consume:$value",
+                      style: Theme.of(context).textTheme.headlineLarge)))),
       floatingActionButton: FloatingActionButton(
         onPressed: _incrementCounter,
         tooltip: 'Increment',
